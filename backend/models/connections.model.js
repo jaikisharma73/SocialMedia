@@ -14,3 +14,7 @@ const connectionRequest = new mongoose.Schema({
         default: null
     }
 });
+
+const ConnectionRequest = mongoose.model('ConnectionRequest', connectionRequest);
+
+export default ConnectionRequest;
