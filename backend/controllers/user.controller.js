@@ -2,10 +2,12 @@ import User from '../models/user.model.js';
 import Profile from '../models/profile.model.js';
 import bcrypt from 'bcrypt';
 
+
+
 const register = async (req, res) => {
     try{
-         const { name, email, password, username } = req.body;
-         if(!name || !email || !password || !username){
+         const { name, email, password, userName } = req.body;
+         if(!name || !email || !password || !userName){
             return res.status(400).json({ message: "All fields are required" });
          }
          const user = await User.findOne({
@@ -19,7 +21,7 @@ const register = async (req, res) => {
             name,
             email,
             password: hashedPassword,
-            username
+            userName
          });
             await newUser.save();
 
@@ -28,7 +30,11 @@ const register = async (req, res) => {
             return res.status(201).json({ message: "User created successfully" });
 
     } catch(error){
-        return res.status(500).json({ message: "Server error" });
+    console.error("REGISTER ERROR:", error);
+
+    return res.status(500).json({
+        message: "Server error",
+        error: error.message});
     }
 }
 export default register;

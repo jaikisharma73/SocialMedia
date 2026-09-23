@@ -9,13 +9,11 @@ import userRoutes from './routes/user.routes.js';
 dotenv.config();
 
 const app = express();
-
 app.use(cors());
-
+app.use(express.json());
 app.use(postRoutes);
 app.use(userRoutes);    
 
-app.use(express.json());
 
 const start = async() => {
     const connectDB = await mongoose.connect("mongodb+srv://jack912062sharmas_db_user:0H6VzHqirDhDy8bS@linkedinclone.hdr1cib.mongodb.net/linkedinclone")
