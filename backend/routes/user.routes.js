@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import {register , login} from '../controllers/user.controller.js';
 import multer from 'multer';
+import { uploadProfilePicture } from '../controllers/user.controller.js';
 
 const router = Router();
 
@@ -14,12 +15,7 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage: storage });
 
-router.route('/upload_profile_picture').post(upload.single('profile_picture'), (req, res) => {
-    if (!req.file) {
-        return res.status(400).json({ message: 'No file uploaded' });
-    }
-    res.status(200).json({ message: 'File uploaded successfully', file: req.file });
-});
+router.route('/upload_profile_picture').post(upload.single('profile_picture'),uploadProfilePicture);
 
 router.route('/register').post(register);
 router.route('/login').post(login);

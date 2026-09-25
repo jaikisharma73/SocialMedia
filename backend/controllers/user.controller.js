@@ -60,7 +60,7 @@ export const login = async (req, res) => {
          await User.updateOne({ _id: user._id }, { token: token });
 
          return res.json({ token: token, message: "Login successful" });
-         
+
     } catch(error){
         console.error("LOGIN ERROR:", error);
         return res.status(500).json({
@@ -69,3 +69,22 @@ export const login = async (req, res) => {
         });
     }
 }
+
+export const uploadProfilePicture = async (req, res) => {
+   const {token} = req.body;
+   try{
+      const user = await User.findOne({ token: token });
+   
+      if(!user){
+         return res.status(404).json({ message: "User not found" });
+      }
+
+      user.profilePicture = req.file.filename;
+      await user.save();
+      return res.json({ message: "Profile picture uploaded successfully" });
+      
+   }catch(error){
+      console.error("UPLOAD PROFILE PICTURE ERROR:", error);
+      return res.status(500).json({message: "Server error", error: error.message});
+      }
+   }
