@@ -94,7 +94,7 @@ const convertUserDataToPDF = async (userData) => {
             );
 
             doc.fontSize(14).text(
-                `Field of Study: ${education.fieldOfStudy || ''}`
+                `Years: ${education.years || ''}`
             );
 
             doc.moveDown();
