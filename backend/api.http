@@ -2,10 +2,10 @@ POST http://localhost:9090/register HTTP/1.1
 Content-Type: application/json
 
 {
-  "name": "John Doe",
-  "email": "john@example.com",
-  "password": "securepassword",
-  "userName": "johndoe"
+  "name": "Rahul Doe",
+  "email": "rohu@example.com",
+  "password": "nottyy",
+  "userName": "rahul01"
 }
 ###
 
@@ -13,7 +13,33 @@ POST http://localhost:9090/login HTTP/1.1
 Content-Type: application/json
 
 {
-  "email": "john@example.com",
-  "password": "securepassword"
+  "email": "rohu@example.com",
+  "password": "nottyy"
 }
 ###
+
+POST http://localhost:9090/update_Profile_Data HTTP/1.1
+Content-Type: application/json
+
+{
+  "token": "21a7b4f390947f3ba0178e09c56224be262e2c9e30f2aeb79e52ca60f9f6969f",
+  "bio": "Experienced",
+  "currentPost": "CTO",
+  "postWork": [
+    {
+      "companyName": "Tech Innovators Inc.",
+      "position": "Chief Technology Officer",
+      "year": "2+ years"
+    }
+  ],
+  "education": [
+    {
+      "schoolName": "University of Technology",
+      "degree": "Master's in Computer Science",
+      "year": "2015-2017"
+    }
+  ]
+}
+###
+
+GET http://localhost:9090/user/get_all_user HTTP/1.1

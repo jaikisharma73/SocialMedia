@@ -1,36 +1,49 @@
-import mongoose,{ Schema } from "mongoose";
+import mongoose, { Schema } from "mongoose";
 
 const UserSchema = new Schema({
-    name:{
+
+    name: {
         type: String,
         required: true
     },
-    userName:{
+
+    userName: {
         type: String,
         required: true,
         unique: true
     },
-    email:{
+
+    email: {
         type: String,
         required: true,
         unique: true
     },
-    password:{
-        type: String,   
+
+    password: {
+        type: String,
         required: true
     },
-    profilePicture:{
+
+    profilePicture: {
         type: String,
         default: ''
     },
-    createdAt:{
+
+    active: {
+        type: Boolean,
+        default: false
+    },
+
+    createdAt: {
         type: Date,
         default: Date.now
     },
-    token:{
+
+    token: {
         type: String,
         default: ''
     }
+
 });
 
 const User = mongoose.model('User', UserSchema);
