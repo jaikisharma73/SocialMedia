@@ -12,7 +12,9 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 app.use(postRoutes);
-app.use(userRoutes);    
+app.use(userRoutes);  
+app.use(express.static('uploads'));
+
 
 
 const start = async() => {
