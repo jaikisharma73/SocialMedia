@@ -88,3 +88,48 @@ export const uploadProfilePicture = async (req, res) => {
       return res.status(500).json({message: "Server error", error: error.message});
       }
    }
+
+   export const updateUserProfile = async (req, res) => {
+      try{
+         const { token, ...newUserData } = req.body;
+         const user = await User.findOne({ token: token });
+         if(!user){
+            return res.status(404).json({ message: "User not found" });
+         }
+         const { username , email} = newUserData;
+         const existingUser = await User.findOne({ $or: [{ username }, { email }] });
+         if(existingUser){
+            if(existingUser || String(existingUser._id) !== String(user._id)){
+               return res.status(400).json({ message: "Username or email already in use" });
+            }
+         }
+   
+         Object.assign(user, newUserData);
+         await user.save();
+         return res.json({ message: "Profile updated successfully" });
+      } catch(error){
+         console.error("UPDATE USER PROFILE ERROR:", error);
+         return res.status(500).json({ message: "Server error", error: error.message });
+      }
+   }
+
+   export const getUserAndProfile = async (req, res) => {
+      try{
+         const { token } = req.query;
+         const user = await User.findOne({ token: token });
+
+         if(!user){
+            return res.status(404).json({ message: "User not found" });
+         }
+         console.log("User found:", user);
+
+         const userProfile = await Profile.findOne({ userId: user._id }).populate('userId', 'name email userName profilePicture');
+
+         return res.json({ user, profile: userProfile });
+      } catch(error){
+         console.error("GET USER AND PROFILE ERROR:", error);
+         return res.status(500).json({ message: "Server error", error: error.message });
+      }
+   }
+   
+         
