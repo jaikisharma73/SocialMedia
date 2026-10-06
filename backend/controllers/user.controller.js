@@ -670,7 +670,7 @@ export const sendConnectionRequest = async (req, res) => {
             if (!user) {
                 return res.status(404).json({ message: "User not found" });
             }
-            const connections  = await ConnectionRequest.find({ userId: user._id, status_accepted: true }).populate('connectionId', 'name email userName profilePicture');
+            const connections  = await ConnectionRequest.find({ connectionId : user._id}).populate('userId', 'name email userName profilePicture');
             return res.status(200).json({connections});
 
         }catch (error) {
