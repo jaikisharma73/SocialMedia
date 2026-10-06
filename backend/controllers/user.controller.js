@@ -680,3 +680,30 @@ export const sendConnectionRequest = async (req, res) => {
             });
         }
     }
+
+    export const acceptConnectionRequest = async (req, res) => {
+        const{ token, requestId , action_type } = req.body;
+        try{
+            const user = await User.findOne({ token });
+            if (!user) {
+                return res.status(404).json({ message: "User not found" });
+            }
+            const connection = await ConnectionRequest.findOne({ _id: requestId });
+            if (!connection) {
+                return res.status(404).json({ message: "Connection request not found" });
+            }
+            if(action_type === "accept"){
+                connection.status_accepted = true;
+            }else{
+                connection.status_accepted = false;
+            }
+            await connection.save();
+            return res.status(200).json({ message: "Connection request updated successfully" });
+
+        }catch (error) {
+            return res.status(500).json({
+                message: "Server error",
+                error: error.message
+            });
+        }
+    }
