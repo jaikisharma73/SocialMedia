@@ -680,6 +680,21 @@ export const sendConnectionRequest = async (req, res) => {
             });
         }
     }
+export const getUserGotConnectionRequests = async (req, res) => {
+    const { token } = req.query;
+    try {
+        const user = await User.findOne({ token });
+        if (!user) {
+            return res.status(404).json({ message: "User not found" });
+        }
+        const connections = await ConnectionRequest.find({ connectionId: user._id })
+            .populate('userId', 'name email userName profilePicture');
+        return res.status(200).json({ connections });
+    } catch (error) {
+        console.error("GET_USER_GOT_CONNECTION_REQUESTS_ERROR:", error);
+        return res.status(500).json({ message: "Server error", error: error.message });
+    }
+};
 
     export const acceptConnectionRequest = async (req, res) => {
         const{ token, requestId , action_type } = req.body;
