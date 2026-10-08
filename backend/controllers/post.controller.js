@@ -16,8 +16,7 @@ export const createPost = async (req, res) => {
         }
         const post = new Post({
             userId: user._id,
-            ...req.body,
-            
+            ...req.body,           
         });
     }catch (err){
         return res.status(500).json({ message: "Error creating post" });
