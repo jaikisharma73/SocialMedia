@@ -16,8 +16,15 @@ export const createPost = async (req, res) => {
         }
         const post = new Post({
             userId: user._id,
-            ...req.body,           
+            body: req.body.body,
+            media: req.file != undefined ? req.file.filename : "",
+            fileType: req.file != undefined ? req.file.mimetype.split('/'): "",
+
         });
+        await post.save();
+        
+        return res.status(201).json({ message: "Post created successfully" });
+
     }catch (err){
         return res.status(500).json({ message: "Error creating post" });
     }
