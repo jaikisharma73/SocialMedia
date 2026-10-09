@@ -1,4 +1,5 @@
 import User from '../models/user.model.js';
+import Post from '../models/post.model.js';
 import Profile from '../models/profile.model.js';
 import bcrypt from 'bcrypt';
 
@@ -18,7 +19,7 @@ export const createPost = async (req, res) => {
             userId: user._id,
             body: req.body.body,
             media: req.file != undefined ? req.file.filename : "",
-            fileType: req.file != undefined ? req.file.mimetype.split('/'): "",
+            fileType: req.file != undefined ? req.file.mimetype.split('/')[1]: "",
 
         });
         await post.save();
@@ -26,6 +27,7 @@ export const createPost = async (req, res) => {
         return res.status(201).json({ message: "Post created successfully" });
 
     }catch (err){
+        console.log(err);
         return res.status(500).json({ message: "Error creating post" });
     }
 }
