@@ -6,6 +6,7 @@ import crypto from 'crypto';
 import PDFDocument from 'pdfkit';
 import fs from 'fs';
 import path from 'path';
+import Post from '../models/post.model.js';
 
 const convertUserDataToPDF = async (userData) => {
     const doc = new PDFDocument();
@@ -722,3 +723,5 @@ export const getUserGotConnectionRequests = async (req, res) => {
             });
         }
     }
+
+   

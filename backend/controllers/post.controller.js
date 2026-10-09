@@ -31,3 +31,15 @@ export const createPost = async (req, res) => {
         return res.status(500).json({ message: "Error creating post" });
     }
 }
+
+ export const getAllPosts = async (req, res) => {
+        try{
+            const posts = await Post.find().populate('userId', 'name email userName profilePicture');
+            return res.status(200).json({posts});
+        }catch (error) {
+            return res.status(500).json({
+                message: "Server error",
+                error: error.message
+            });
+        }
+    }   
