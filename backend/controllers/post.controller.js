@@ -38,7 +38,7 @@ export const createPost = async (req, res) => {
             return res.status(200).json({posts});
         }catch (error) {
             return res.status(500).json({
-                message: "Server error",
+                message: "Server error crash",
                 error: error.message
             });
         }
