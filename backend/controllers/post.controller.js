@@ -124,5 +124,19 @@ export const delete_comment_of_user = async (req, res) => {
 export const increment_likes = async(req,res)=>{
     const {post_id} = req.body;
 
-    
+    try{
+        const post = await Post.findOne({ _id: post_id });
+        if (!post) {
+            return res.status(404).json({ message: "Post not found" });
+        }
+        post.likes += 1;
+        await post.save();
+        return res.status(200).json({ message: "Like incremented successfully", likes: post.likes });
+
+    }catch(error){
+        return res.status(500).json({
+            message: "Server error",
+            error: error.message
+        });
+    }
 }
