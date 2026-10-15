@@ -65,7 +65,7 @@ export const deletePost = async (req, res) => {
         await Post.deleteOne({ _id: post_Id });
         return res.status(200).json({ message: "Post deleted successfully" });
 
-        
+
     }catch (error) {
         return res.status(500).json({
             message: "Server error crash",  
@@ -74,3 +74,55 @@ export const deletePost = async (req, res) => {
     }
 }
 
+export const get_comments_by_post = async (req, res) => {
+    const { postId } = req.body;
+
+    try {
+        const post = await Post.findOne({ _id: postId });
+        if (!post) {
+            return res.status(404).json({ message: "Post not found" });
+        }
+        const comments = await Comment.find({ postId }).populate('userId', 'name email userName profilePicture');
+
+        return res.status(200).json({ comments : post.comments });
+
+    } catch (error) {
+        return res.status(500).json({
+            message: "Server error",
+            error: error.message
+        });
+    }
+};
+
+export const delete_comment_of_user = async (req, res) => { 
+    const { token, commentId } = req.body;
+    try{
+        const user = await User.findOne({ token }).select('_id');
+        if(!user){
+            return res.status(404).json({ message: "User not found" });
+        }
+
+        const comment = await Comment.findOne({ "_id": commentId, "userId": user._id });
+        if(!comment){
+            return res.status(404).json({ message: "Comment not found" });
+        }
+
+        if(comment.userId.toString()!== user._id.toString()){
+            return res.status(404).json({ message: "Unauthorized" });
+        }
+
+        await Comment.deleteOne({ _id: commentId });
+        return res.status(200).json({ message: "Comment deleted successfully" });
+    }catch (error) {
+        return res.status(500).json({
+            message: "Server error",
+            error: error.message
+        });
+    }
+};
+
+export const increment_likes = async(req,res)=>{
+    const {post_id} = req.body;
+
+    
+}
