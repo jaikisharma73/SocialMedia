@@ -724,4 +724,33 @@ export const getUserGotConnectionRequests = async (req, res) => {
         }
     }
 
-   
+export const commentOnPost = async (req, res) => {
+    const { token, postId, comment } = req.body;
+
+    try {
+        const user = await User.findOne({ token : token }).select('_id');
+        if (!user) {
+            return res.status(404).json({ message: "User not found" });
+        }
+
+        const post = await Post.findOne({ _id: postId });
+        if (!post) {
+            return res.status(404).json({ message: "Post not found" });
+        }
+
+        const newComment = new Comment({
+            userId: user._id,
+            postId: post._id,
+            body: comment
+        });
+        await newComment.save();
+
+        return res.status(201).json({ message: "Comment added successfully" });
+
+    }catch (error) {
+        return res.status(500).json({
+            message: "Server error",    
+        error: error.message
+        });
+    }
+}
