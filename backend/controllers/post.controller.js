@@ -88,7 +88,7 @@ export const get_comments_by_post = async (req, res) => {
 
     } catch (error) {
         return res.status(500).json({
-            message: "Server error",
+            message: "Server error s",
             error: error.message
         });
     }
